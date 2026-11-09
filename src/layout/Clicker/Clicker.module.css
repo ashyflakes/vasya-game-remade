@@ -1,0 +1,9 @@
+.game {
+	display: grid;
+	justify-items: center;
+	gap: 2rem;
+
+	width: min(100% - 2rem, 38rem);
+	margin-inline: auto;
+	padding-block: 3rem;
+}

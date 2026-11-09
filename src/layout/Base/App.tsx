@@ -11,24 +11,37 @@ import styles from './App.module.css';
 import VasyaImage from '@/components/VasyaImage/VasyaImage.tsx';
 import CatFoodImage from '@/components/CatFoodImage/CatFoodImage.tsx';
 import { soundManager } from '@/audio/sfxManager.ts';
+import ClickerHeader from '@/layout/Clicker/ClickerHeader/ClickerHeader.tsx';
+import StatCard from '@/components/StatCard/StatCard.tsx';
+import UpgradeCard from '@/components/UpgradeCard/UpgradeCard.tsx';
+import SoundToggle from '@/components/SoundToggle/SoundToggle.tsx';
+import UpgradeButton from '@/components/UpgradeButton/UpgradeButton.tsx';
+import CatnipImage from '@/components/CatnipImage/CatnipImage.tsx';
+import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal.tsx';
 
 const formatNumber = (value: number) => new Intl.NumberFormat('ru-RU').format(value);
 
 export default function App() {
 	const game = createGameStore();
 
-	const [soundEnabled, setSoundEnabled] = createSignal(true);
-
-	function toggleSound() {
-		const nextValue = !soundEnabled();
-
-		setSoundEnabled(nextValue);
-		soundManager.setMuted(!nextValue);
-	}
-
 	function handleClick() {
 		game.click();
-		soundManager.playClick();
+
+		if (Math.random() < 0.015) {
+			soundManager.playFart();
+		} else if (Math.random() < 0.1) {
+			soundManager.playClick2();
+		} else if (Math.random() < 0.1) {
+			soundManager.playClick3();
+		} else if (Math.random() < 0.1) {
+			soundManager.playClick4();
+		} else if (Math.random() < 0.1) {
+			soundManager.playClick5();
+		} else if (Math.random() < 0.1) {
+			soundManager.playClick6();
+		} else {
+			soundManager.playClick();
+		}
 	}
 
 	function handleClickUpgrade() {
@@ -47,25 +60,54 @@ export default function App() {
 		}
 	}
 
-	// Passive income timer
+	function handleCatMintUpgrade() {
+		const purchased = game.buyCatMintUpgrade();
+
+		if (purchased) {
+			soundManager.playUpgrade();
+			soundManager.playCatnip();
+			setNow(Date.now()); // сразу пересчитать remaining после установки catMintEndsAt
+		}
+	}
+
 	onMount(() => {
-		const intervalId = window.setInterval(() => {
+		let incomeId: number;
+		let cancelled = false;
+
+		const tick = () => {
+			if (cancelled) return;
+
 			game.addPassiveIncome();
-		}, 1000);
+
+			const delay = game.isCatMintActive() ? 500 : 1000;
+			incomeId = window.setTimeout(tick, delay);
+		};
+
+		tick();
+
+		// отдельный «часовой» интервал — только для перерисовки catMintRemaining
+		const clockId = window.setInterval(() => setNow(Date.now()), 1000);
 
 		onCleanup(() => {
-			window.clearInterval(intervalId);
+			cancelled = true;
+			window.clearTimeout(incomeId);
+			window.clearInterval(clockId);
 		});
 	});
 
+	const [now, setNow] = createSignal(Date.now());
+
+	const catMintRemaining = () =>
+		Math.max(0, Math.ceil((game.state.catMintEndsAt - now()) / 1000));
+
+	const catMintActive = () => catMintRemaining() > 0;
+
+	let dialogRef: HTMLDialogElement | undefined;
+
 	return (
 		<main class={styles.game}>
-			<header class={styles.header}>
-				<h1>Вася (Кликер)</h1>
-				<p>Простейшая игра</p>
-			</header>
+			<ClickerHeader />
 
-			{/* Currency */}
 			<section class={styles.balance}>
 				<span>ВАШ БАЛАНС</span>
 
@@ -76,20 +118,20 @@ export default function App() {
 
 			{/* Statistics */}
 			<section class={styles.stats}>
-				<div>
+				<StatCard>
 					<span>за клик</span>
 					<strong>{game.state.clickPower}</strong>
-				</div>
+				</StatCard>
 
-				<div>
+				<StatCard>
 					<span>за секунду</span>
 					<strong>{game.state.autoIncome}</strong>
-				</div>
+				</StatCard>
 
-				<div>
+				<StatCard>
 					<span>всего кликов</span>
 					<strong>{formatNumber(game.state.totalClicks)}</strong>
-				</div>
+				</StatCard>
 			</section>
 
 			{/* Click button */}
@@ -103,53 +145,76 @@ export default function App() {
 			<section class={styles.shop}>
 				<h2>Улучшения</h2>
 
-				<article class={styles.upgradeCard}>
+				<UpgradeCard>
 					<CatFoodImage />
 					<div>
 						<h3>Корм</h3>
 
 						<p>+1 васякойн/клик</p>
 
-						<small>Сила: {game.state.clickPower}</small>
+						<small>Сила клика: {game.state.clickPower}</small>
 					</div>
 
-					<button
-						type="button"
+					<UpgradeButton
 						disabled={game.state.currency < game.state.clickUpgradeCost}
 						onClick={handleClickUpgrade}
 					>
-						+ {game.state.clickUpgradeCost}
-					</button>
-				</article>
+						{game.state.clickUpgradeCost}
+					</UpgradeButton>
+				</UpgradeCard>
 
-				<article class={styles.upgradeCard}>
+				<UpgradeCard>
 					<VasyaImage />
 					<div>
 						<h3>+1 Вася</h3>
 
 						<p>+1 васякойн/секунду</p>
 
-						<small>Прибыль: {game.state.autoIncome}</small>
+						<small>Авто-прибыль: {game.state.autoIncome}</small>
 					</div>
 
-					<button
-						type="button"
+					<UpgradeButton
 						disabled={game.state.currency < game.state.autoUpgradeCost}
 						onClick={handleAutoUpgrade}
 					>
-						+ {game.state.autoUpgradeCost}
-					</button>
-				</article>
+						{game.state.autoUpgradeCost}
+					</UpgradeButton>
+				</UpgradeCard>
+
+				<UpgradeCard>
+					<CatnipImage />
+					<div>
+						<h3>Кошачья мята</h3>
+						<p>
+							X2 ускорение получения васякойнов на {game.state.catMintDuration}{' '}
+							секунд.
+						</p>
+						<small>
+							Ускорение:{' '}
+							{catMintActive() ? catMintRemaining() : game.state.catMintDuration}с
+						</small>
+					</div>
+
+					<UpgradeButton
+						disabled={
+							catMintActive() || game.state.currency < game.state.catMintUpgradeCost
+						}
+						onClick={handleCatMintUpgrade}
+					>
+						{catMintActive()
+							? `+${catMintRemaining()} с`
+							: `${game.state.catMintUpgradeCost}`}
+					</UpgradeButton>
+				</UpgradeCard>
 			</section>
 
-			<button type="button" aria-pressed={soundEnabled()} onClick={toggleSound}>
-				{soundEnabled() ? 'звук: вкл.' : 'звук: выкл.'}
+			<SoundToggle />
+
+			<button class={styles.resetButton} type="button" onClick={() => dialogRef?.showModal()}>
+				Cброс прогресса
 			</button>
 
-			{/* Reset */}
-			<button class={styles.resetButton} type="button" onClick={game.reset}>
-				Ресет прогресса
-			</button>
+			<ConfirmationModal ref={el => (dialogRef = el)} onConfirm={game.reset} />
 		</main>
 	);
 }

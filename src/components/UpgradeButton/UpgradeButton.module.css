@@ -1,0 +1,41 @@
+.upgrade__button {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+
+	padding: 0.75rem 1rem;
+	border: none;
+	border-radius: var(--corner-smooth);
+
+	background-color: var(--accent);
+	color: white;
+
+	cursor: pointer;
+
+	span {
+		@supports (user-select: none) {
+			user-select: none;
+		}
+	}
+
+	&:active {
+		background-color: var(--accent-active);
+		transform: translateY(var(--downward-small));
+	}
+
+	&:hover {
+		background-color: var(--accent-hover);
+	}
+
+	&:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+	}
+
+	@supports (corner-shape: squircle) {
+		corner-shape: squircle;
+		border-radius: var(--corner-smoothest);
+	}
+}
+

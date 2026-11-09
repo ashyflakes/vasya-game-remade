@@ -1,0 +1,49 @@
+.clickButton {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	gap: var(--spacing-little);
+	background-color: transparent;
+	padding: var(--spacing-medium);
+
+	border-radius: var(--corner-regular);
+	color: white;
+
+	transition: transform .15s ease;
+
+	@supports (corner-shape: squircle) {
+		corner-shape: squircle;
+		border-radius: var(--corner-smoothest);
+	}
+
+	img {
+		border-radius: var(--corner-smooth);
+		height: 50%;
+		width: 50%;
+
+		@supports (corner-shape: squircle) {
+			corner-shape: squircle;
+			border-radius: var(--corner-smoothest);
+		}
+	}
+}
+
+.clickButton span {
+	font-size: 1.75rem;
+	font-weight: 700;
+}
+
+.clickButton small {
+	text-align: center;
+	font-size: 0.875rem;
+}
+
+.clickButton:hover {
+	transform: scale(1.04);
+}
+
+.clickButton:active {
+	transform: scale(0.95);
+}

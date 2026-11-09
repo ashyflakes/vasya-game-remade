@@ -1,0 +1,9 @@
+.resetButton {
+	margin-top: 1rem;
+	background: transparent;
+	color: var(--text-lighter);
+
+	@supports (user-select: none) {
+		user-select: none;
+	}
+}

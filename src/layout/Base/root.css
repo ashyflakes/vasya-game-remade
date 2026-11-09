@@ -1,6 +1,8 @@
 :root {
 	/* backgrounds */
 
+	color-scheme: light dark;
+
 	--background: light-dark(oklch(0.9792 0.0041 271.37), oklch(0.16 0.008 271));
 	--surface: light-dark(oklch(1 0 0), oklch(0.21 0.01 271));
 	--surface-muted: light-dark(oklch(0.982 0 0), oklch(0.25 0.01 271));

@@ -1,0 +1,16 @@
+.soundToggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	background-color: transparent;
+
+	span {
+		font-size: var(--font-regular);
+		color: var(--text-lighter);
+	}
+
+	@supports (user-select: none) {
+		user-select: none;
+	}
+}

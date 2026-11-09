@@ -1,0 +1,102 @@
+.confirmationModal {
+	background-color: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--corner-smooth);
+	padding: var(--spacing-large);
+	padding-block: var(--spacing-larger);
+
+	@supports (corner-shape: squircle) {
+		corner-shape: squircle;
+		border-radius: var(--corner-smoothest);
+	}
+
+	&::backdrop {
+		background-color: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(2px);
+	}
+}
+.confirmationModalContent {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+
+	border-radius: var(--corner-regular);
+
+	background-color: var(--surface);
+}
+.confirmationModalHeader {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: var(--spacing-regular);
+
+	p {
+		color: var(--text-lighter);
+	}
+}
+.confirmationModalButtons {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	gap: var(--spacing-medium);
+
+	margin-top: var(--spacing-medium);
+}
+.resetButton {
+	display: inline-flex;
+	justify-content: center;
+	padding: var(--spacing-small) var(--spacing-regular);
+
+	font-size: var(--font-regular);
+	font-weight: 600;
+	color: white;
+	border-radius: var(--corner-smooth);
+	background-color: var(--delete);
+
+	@supports (corner-shape: squircle) {
+		corner-shape: squircle;
+		border-radius: var(--corner-smoothest);
+	}
+
+	&:active {
+		background-color: var(--delete-active);
+		transform: translateY(var(--downward-small));
+	}
+
+	&:hover {
+		background-color: var(--delete-hover);
+	}
+
+	@supports (user-select: none) {
+		user-select: none;
+	}
+}
+.cancelButton {
+	display: inline-flex;
+	justify-content: center;
+
+	border: 1px var(--delete) solid;
+	border-radius: var(--corner-smooth);
+	padding: var(--spacing-small) var(--spacing-regular);
+
+	font-size: var(--font-regular);
+	font-weight: 600;
+	color: white;
+	background-color: var(--surface);
+
+	&:active {
+		transform: translateY(var(--downward-small));
+	}
+	&:hover {
+		background-color: var(--surface-muted);
+	}
+	@supports (user-select: none) {
+		user-select: none;
+	}
+
+	@supports (corner-shape: squircle) {
+		corner-shape: squircle;
+		border-radius: var(--corner-smoothest);
+	}
+}

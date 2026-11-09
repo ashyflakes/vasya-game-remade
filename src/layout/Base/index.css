@@ -50,6 +50,10 @@ html {
 		field-sizing: content;
 	}
 }
+:where(dialog) {
+	border: none;
+	margin: auto;
+}
 :where(textarea) {
 	@supports (resize: vertical) {
 		resize: vertical;

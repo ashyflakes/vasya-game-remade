@@ -1,0 +1,36 @@
+.upgradeCard {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	background-color: var(--surface);
+
+	padding: 1.25rem;
+
+	border: 1px solid var(--border);
+	border-radius: 1rem;
+
+	img {
+		height: 100%;
+		border-radius: var(--corner-regular);
+		width: 15%;
+
+		@supports (user-select: none) {
+			user-select: none;
+		}
+
+		@supports (corner-shape: squircle) {
+			corner-shape: squircle;
+			border-radius: var(--corner-smoothest);
+		}
+	}
+	h3, p {
+		margin: 0 0 0.5rem;
+	}
+	small {
+		color: var(--text-lighter);
+	}
+}
+
+
+
