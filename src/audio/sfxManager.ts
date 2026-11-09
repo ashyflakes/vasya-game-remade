@@ -41,7 +41,7 @@ const sounds = {
 	}),
 
 	upgrade: new Howl({
-		src: ['/audio/buy.mp3'],
+		src: ['/audio/buy-sound.mp3'],
 		volume: 0.8,
 		preload: true,
 	}),
