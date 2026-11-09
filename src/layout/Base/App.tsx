@@ -176,7 +176,7 @@ export default function App() {
 					<div>
 						<h3>Колбаски</h3>
 
-						<p>+5 васякойнов/секунду</p>
+						<p>+5 васякойнов/клик</p>
 
 						<small>Сила клика: {game.state.kolbaskiPower}</small>
 					</div>
