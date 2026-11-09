@@ -105,7 +105,7 @@ export const createGameStore = () => {
 			produce((s: GameState) => {
 				s.currency -= s.kolbaskiUpgradeCost;
 				s.clickPower += 5;
-				s.kolbaskiUpgradeCost = Math.ceil(s.kolbaskiUpgradeCost * 2);
+				s.kolbaskiUpgradeCost = Math.ceil(s.kolbaskiUpgradeCost * 1.75);
 			}),
 		);
 
