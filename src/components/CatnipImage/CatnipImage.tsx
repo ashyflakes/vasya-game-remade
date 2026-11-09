@@ -1,4 +1,4 @@
-import catnip from './catnip.png';
+import catnip from './catnip.webp';
 import styles from './Catnip.module.css';
 
 export default function CatnipImage() {

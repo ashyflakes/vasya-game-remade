@@ -164,7 +164,7 @@ export default function App() {
 				</UpgradeCard>
 
 				<UpgradeCard>
-					<VasyaImage />
+					<VasyaImage variant="secondary" />
 					<div>
 						<h3>+1 Вася</h3>
 

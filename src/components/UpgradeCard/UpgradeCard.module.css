@@ -8,7 +8,13 @@
 	padding: 1.25rem;
 
 	border: 1px solid var(--border);
-	border-radius: 1rem;
+	border-radius: var(--corner-smooth);
+	box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.05);
+
+	@supports (corner-shape: squircle) {
+		corner-shape: squircle;
+		border-radius: var(--corner-smoothest);
+	}
 
 	img {
 		height: 100%;

@@ -1,13 +1,19 @@
 
-.stats__container {
+.statsContainer {
 	display: grid;
-	gap: 0.5rem;
+	gap: var(--spacing-large);
 	justify-items: center;
 	background-color: var(--surface);
 
-	padding: 1rem;
+	padding: var(--spacing-medium);
 	border: 1px solid var(--border);
-	border-radius: 1rem;
+	border-radius: var(--corner-smooth);
+	box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.05);
+
+	@supports (counter-reset: squircle) {
+		corner-shape: squircle;
+		border-radius: var(--corner-smoothest);
+	}
 
 	span {
 		color: var(--text-lighter);

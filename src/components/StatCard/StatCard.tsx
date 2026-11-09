@@ -6,5 +6,5 @@ type Props = {
 };
 
 export default function StatCard(props: Props) {
-	return <div class={styles.stats__container}>{props.children}</div>;
+	return <div class={styles.statsContainer}>{props.children}</div>;
 }
