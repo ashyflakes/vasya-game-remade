@@ -18,6 +18,7 @@ import SoundToggle from '@/components/SoundToggle/SoundToggle.tsx';
 import UpgradeButton from '@/components/UpgradeButton/UpgradeButton.tsx';
 import CatnipImage from '@/components/CatnipImage/CatnipImage.tsx';
 import ConfirmationModal from '@/components/ConfirmationModal/ConfirmationModal.tsx';
+import KolbaskiImage from '@/components/KolbaskiImage/KolbaskiImage.tsx';
 
 const formatNumber = (value: number) => new Intl.NumberFormat('ru-RU').format(value);
 
@@ -46,6 +47,13 @@ export default function App() {
 
 	function handleClickUpgrade() {
 		const purchased = game.buyClickUpgrade();
+
+		if (purchased) {
+			soundManager.playUpgrade();
+		}
+	}
+	function handleKolbaskiUpgrade() {
+		const purchased = game.buyKolbaskiUpgrade();
 
 		if (purchased) {
 			soundManager.playUpgrade();
@@ -160,6 +168,24 @@ export default function App() {
 						onClick={handleClickUpgrade}
 					>
 						{game.state.clickUpgradeCost}
+					</UpgradeButton>
+				</UpgradeCard>
+
+				<UpgradeCard>
+					<KolbaskiImage />
+					<div>
+						<h3>Колбаски</h3>
+
+						<p>+5 васякойнов/секунду</p>
+
+						<small>Сила клика: {game.state.kolbaskiPower}</small>
+					</div>
+
+					<UpgradeButton
+						disabled={game.state.currency < game.state.kolbaskiUpgradeCost}
+						onClick={handleKolbaskiUpgrade}
+					>
+						{game.state.kolbaskiUpgradeCost}
 					</UpgradeButton>
 				</UpgradeCard>
 

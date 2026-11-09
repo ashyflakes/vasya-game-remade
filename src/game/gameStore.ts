@@ -10,11 +10,13 @@ const initialState: GameState = {
 	totalClicks: 0,
 
 	clickPower: 1,
+	kolbaskiPower: 5,
 	autoIncome: 0,
 	catMintDuration: 30,
 	catMintEndsAt: 0,
 
 	clickUpgradeCost: 10,
+	kolbaskiUpgradeCost: 50,
 	autoUpgradeCost: 50,
 	catMintUpgradeCost: 250,
 };
@@ -40,6 +42,7 @@ const deserializeGameState = (value: string): GameState => {
 			totalClicks: Math.floor(readNumber(data.totalClicks, 0)),
 
 			clickPower: Math.max(1, readNumber(data.clickPower, 1)),
+			kolbaskiPower: Math.max(5, readNumber(data.kolbaskiPowerCost, 5)),
 
 			autoIncome: readNumber(data.autoIncome, 0),
 
@@ -48,6 +51,8 @@ const deserializeGameState = (value: string): GameState => {
 			catMintEndsAt: readNumber(data.catMintEndsAt, 0),
 
 			clickUpgradeCost: Math.max(1, readNumber(data.clickUpgradeCost, 10)),
+
+			kolbaskiUpgradeCost: Math.max(1, readNumber(data.kolbaskiUpgradeCost, 75)),
 
 			autoUpgradeCost: Math.max(1, readNumber(data.autoUpgradeCost, 50)),
 
@@ -88,6 +93,19 @@ export const createGameStore = () => {
 				s.currency -= s.clickUpgradeCost;
 				s.clickPower += 1;
 				s.clickUpgradeCost = Math.ceil(s.clickUpgradeCost * 1.5);
+			}),
+		);
+
+		return true;
+	};
+	const buyKolbaskiUpgrade = (): boolean => {
+		if (state.currency < state.kolbaskiUpgradeCost) return false;
+
+		setState(
+			produce((s: GameState) => {
+				s.currency -= s.kolbaskiUpgradeCost;
+				s.clickPower += 5;
+				s.kolbaskiUpgradeCost = Math.ceil(s.kolbaskiUpgradeCost * 2);
 			}),
 		);
 
@@ -149,5 +167,6 @@ export const createGameStore = () => {
 		buyCatMintUpgrade,
 		addPassiveIncome,
 		reset,
+		buyKolbaskiUpgrade,
 	};
 };
